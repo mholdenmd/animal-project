@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: whitesmoke;
+        }
+        
+        li {
+          float: left;
+        }
+        
+        li a {
+          display: block;
+          color: black;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+        
+        li a:hover:not(.active) {
+          background-color: lightblue;
+        }
+        
+        .active {
+          background-color: lightblue;
+        }
+        </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <title>Document</title>
+</head>
+
+<body>
+    <header>
+        <h1>Welcome to Vet Tech!</h1>
+        <img src="{% static 'static/images/groom.jpg' %}" alt="">
+    </header>
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#news">My Acccount</a></li>
+        <li><a href="#news">Doctors</a></li>
+        <li><a href="#news">Groomers</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li style="float:right"><a class="active" href="/logout">Logout</a></li>
+      </ul>
+    
+        <br>
+    <menu>
+        <h1>Login Successful! Welcome Back, {{loggedinuser.firstname}} {{loggedinuser.lastname}}</h1>
+        <br>
+        {% if messages %}
+        {% for message in messages %}
+        <p style="color: red;">{{message}}</p>
+        {% endfor %}
+        {% endif %}
+
+        
+        <h1>Add A Pet</h1>
+        <form action="/addpet" method="post">
+            {% csrf_token %}
+            <p>Name: <input type="text" name="name" id=""></p>
+            <p>Breed: <input type="text" name="breed" id=""></p>
+            <p>Age: <input type="number" name="age" id=""></p>
+            <p>Sex: <input type="text" name="sex" id=""></p>
+            <p>Food Type:</p>
+            <textarea name="foodtype" id="" cols="30" rows="5"></textarea>
+            <br>
+            <p>Description:</p>
+            <textarea name="description" id="" cols="30" rows="5"></textarea>
+            <br>
+            <br>
+            <input type="submit" value="Add" class="button">
+        </form>
+        <br>
+        <br>
+        <h1>Pets</h1>
+        {% for pet in pets %}
+        <div>
+            </a>
+            <p>Pet parent: <a href="/user/{{pet.owner.id}}">{{pet.owner.firstname}}
+                    {{pet.owner.lastname}}</a>
+            </p>
+            <h4>Name: {{pet.name}}</h4>
+            <p>Breed: {{pet.breed}}</p>
+            <p> Age: {{pet.age}}</p>
+            <p>Sex: {{pet.sex}}</p>
+            <p>Food type: {{pet.foodtype}}</p>
+            <p>Description: {{pet.description}}</p>
+            {% if pet.owner == loggedinuUser %}
+            <a href="/{{pet.id}}/delete"><button type="button">Delete</button></a>
+            {% endif %}
+            {% endfor %}
+
+        </div>
+    </menu>
+        <footer>
+            <p>We make life a little easier for you and your pets</p>
+        </footer>
+</body>
+
+</html>

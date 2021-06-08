@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <style>
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: whitesmoke;
+        }
+        
+        li {
+          float: left;
+        }
+        
+        li a {
+          display: block;
+          color: black;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+        
+        li a:hover:not(.active) {
+          background-color: lightblue;
+        }
+        
+        .active {
+          background-color: lightblue;
+        }
+        </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <header>
+        <h1>Lets get you and your pet setup!</h1>
+        <img src="{% static '/static/images/pom-pom1.jpg' %}" alt="">
+    </header>
+    <ul>
+        <li><a href="/success">Home</a></li>
+        <li><a href="#news">My Acccount</a></li>
+        <li><a href="#news">Doctors</a></li>
+        <li><a href="#news">Groomers</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li style="float:right"><a class="active" href="/logout">Logout</a></li>
+      </ul>
+    
+    
+    <menu>
+    <h1>Hi {{loggedinuser.firstname}}!</h1>
+    <h2>Make an appointment for your furry friend below:</h2>
+    <ul>
+        <form action="/user/{{loggedinuser.id}}/makeapp" method="post">
+            {% csrf_token %}
+            <p>Time: <input type="datetime-local" name="time" value="" id=""></p>
+            <p>Pet Name: <input type="text" name="client" value="" id=""></p>
+            <p>Description:</p>
+            <textarea name="description" id="" cols="30" rows="5"></textarea>
+            <br>
+            <input type="submit" value="Make Appointment">
+        </form>
+        <br>
+        {% for appt in loggedinuser.appointments.all %}
+        <h4>{{appt.client.firstname}} {{appt.client.lastname}}</h4>
+        <p>{{appt.time}}</p>
+        <p>{{appt.description}}</p>
+
+        {% endfor %}
+    </menu>
+        <br>
+        <br>
+        <br>
+        <footer>
+            <p>We make life a little easier for you and your pets</p>
+        </footer>
+</body>
+
+</html>
